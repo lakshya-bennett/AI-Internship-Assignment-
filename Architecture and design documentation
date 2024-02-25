@@ -1,0 +1,53 @@
+Architecture and Design Documentation
+
+Overview
+
+The multi-threaded priority message queue system consists of three main components:
+
+Priority Queue: A data structure that supports enqueueing, dequeueing, peeking, and empty checking with varying priorities.
+Thread Pool: A fixed number of worker threads that execute tasks concurrently.
+Message Sending Function: A function that allows threads to send messages to other threads with a specified priority.
+Data Structures
+
+Priority Queue: A queue data structure with a priority value associated with each message. The priority queue is implemented using a list to store the messages and a lock and condition variable to synchronize access to the queue.
+Thread Pool: A fixed number of worker threads that are initialized at startup. Each worker thread has its own task queue to ensure thread safety.
+Message: A data structure that contains a message string and a priority value.
+Algorithms
+
+Priority Queue: The priority queue is implemented using a list with the following operations:
+Enqueue: Add a new message to the list and maintain the priority order.
+Dequeue: Remove and return the message with the highest priority.
+Peek: Return the message with the highest priority without removing it from the queue.
+Empty check: Check if the list is empty.
+Thread Pool: The thread pool is implemented using a fixed number of worker threads that execute tasks concurrently. The tasks are added to the worker threads' task queues using a lock-free queue data structure to ensure thread safety.
+Synchronization Mechanisms
+
+Mutex: Used to protect the priority queue from concurrent access.
+Condition Variables: Used to wake up sleeping threads when a message is enqueued.
+Thread Safety
+
+The priority queue and thread pool are designed to be thread-safe by using synchronization mechanisms such as mutexes and condition variables. The PriorityQueue class uses a lock and condition variable to synchronize access to the queue. The ThreadPool class uses a lock-free queue data structure to ensure thread safety when adding tasks to the worker threads' task queues.
+
+Extensibility
+
+The system is designed to be extensible by allowing the user to define their own simple action when receiving a message. The receive_message method in the MessageQueue class can be modified to perform any simple action, such as performing a calculation or updating a shared data structure.
+
+Testability
+
+The system is designed to be testable by providing a main program or test cases that demonstrate the functionality. The test_message_queue.py program demonstrates how to use the MessageQueue class and send messages between multiple instances with different priorities.
+
+Performance
+
+The system is designed to be efficient by using a priority queue to ensure that messages with higher priorities are processed before messages with lower priorities. The thread pool is designed to execute tasks concurrently, which can improve performance by utilizing multiple CPU cores.
+
+Usage
+
+To use the multi-threaded priority message queue system, the user can create multiple MessageQueue instances and send messages between them with different priorities. The send_message method can be used to enqueue a message with a specified priority, and the receive_message method can be used to dequeue a message and perform a simple action. The start method can be used to start the receive loop in a separate thread, and the stop method can be used to stop the thread pool and join the receive thread.
+
+Limitations
+
+The system is designed for use with a fixed number of worker threads in the thread pool. If the number of worker threads needs to be changed, the ThreadPool class will need to be modified.
+
+Future Work
+
+The system can be extended to support dynamic thread pools, where the number of worker threads can be changed at runtime. The system can also be extended to support more complex actions when receiving messages, such as updating shared data structures or communicating with external systems.
